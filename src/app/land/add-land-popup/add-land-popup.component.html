@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add new land</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <p>Name</p>
+    <input matInput [(ngModel)]="data.landName">
+  </mat-form-field>
+  <mat-form-field>
+    <p>Adress</p>
+    <input matInput [(ngModel)]="data.adress">
+  </mat-form-field>
+  <mat-form-field>
+    <p>Area in hektars</p>
+    <input matInput [(ngModel)]="data.areaInHektars">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
