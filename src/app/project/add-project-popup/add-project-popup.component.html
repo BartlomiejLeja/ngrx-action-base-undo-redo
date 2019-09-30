@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add new project</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <p>Name</p>
+    <input matInput [(ngModel)]="data.projectName">
+  </mat-form-field>
+  <mat-form-field>
+    <p>Number of lands</p>
+    <input matInput [(ngModel)]="data.numberOfLands">
+  </mat-form-field>
+  <mat-form-field>
+    <p>Profit</p>
+    <input matInput [(ngModel)]="data.profit">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

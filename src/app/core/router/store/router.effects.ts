@@ -7,6 +7,9 @@ import { map, tap } from 'rxjs/operators';
 import { RouterGo, RouterStart, Navigation } from './router.action';
 import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
+import * as undoRedoAction from '../../undoredo/store/undoredo.action';
+import { StateHistory } from '../../undoredo/store/state/undoredo.model';
+import { UndoSuccess, RedoSuccess } from '../../undoredo/store/undoredo.action';
 
 @Injectable()
 export class RouterEffects{
@@ -36,10 +39,45 @@ export class RouterEffects{
         })
     );
 
+    @Effect({ dispatch: false })
+    public undoNavigation$  = this.action$.pipe(
+        ofType(undoRedoAction.UndoRedoActionTypes.UNDO),
+        map((action: undoRedoAction.Undo) =>{
+            if(action.payload.presentAction.type==='[Router] Go'){
+                this.routerStore.dispatch(
+                    new RouterStart({
+                        navigateTo: new Navigation(
+                            action.payload.presentAction.payload.navigatedFrom.path
+                        )
+                    })
+                );
+                this.undoRedoStore.dispatch(new UndoSuccess())
+            }
+        })
+    );
+
+    @Effect({ dispatch: false })
+    public redoNavigation$  = this.action$.pipe(
+        ofType(undoRedoAction.UndoRedoActionTypes.REDO),
+        map((action: undoRedoAction.Redo) =>{
+            if(action.payload.fututeAction.type==='[Router] Go'){
+                this.routerStore.dispatch(
+                    new RouterStart({
+                        navigateTo: new Navigation(
+                            action.payload.fututeAction.payload.navigatedTo.path
+                        )
+                    })
+                );
+                this.undoRedoStore.dispatch(new RedoSuccess())
+            }
+        })
+    );
+
   constructor(
       private action$: Actions,
       private router: Router,
-      private routerStore: Store<any>
+      private routerStore: Store<any>,
+      private undoRedoStore: Store<StateHistory>
   ){
       this.routerStore.select(getRouterSelector).subscribe(
           presentRoute =>{

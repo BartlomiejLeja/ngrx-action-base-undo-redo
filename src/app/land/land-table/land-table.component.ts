@@ -15,7 +15,7 @@ import { AddLandPopupComponent } from '../add-land-popup/add-land-popup.componen
 export class LandTableComponent implements OnInit {
   public landCollectionStore : Item[];
   private rowIdToEdit: number
-  constructor (private landService: LandService, 
+  constructor (
     private landStore: Store<LandState>, 
     public dialog: MatDialog){}
 
@@ -60,7 +60,7 @@ export class LandTableComponent implements OnInit {
     
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(AddLandPopupComponent, {
       width: '350px',
       data: {}

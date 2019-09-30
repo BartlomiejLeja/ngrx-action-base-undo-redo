@@ -20,6 +20,27 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>ngrx-action-base-undo-redo</span>
+      <span class="example-spacer"></span>
+      
+      <button mat-raised-button color="primary" (click)="undo()" >
+        <mat-icon  
+          [ngClass] = "{
+            'example-icon' : isUndouable ,
+            'non-active-icon' : !isUndouable 
+          }"
+         aria-hidden="false" aria-label="Example home icon">undo
+        </mat-icon>
+      </button>
+
+      <button mat-raised-button color="primary" (click)="redo()">
+      <mat-icon 
+      [ngClass] = "{
+        'example-icon' : isRedoable,
+        'non-active-icon' : !isRedoable 
+      }"
+      aria-hidden="false" aria-label="Example home icon">redo
+    </mat-icon>
+    </button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

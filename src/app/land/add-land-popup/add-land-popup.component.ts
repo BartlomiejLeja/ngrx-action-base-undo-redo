@@ -10,11 +10,12 @@ import { Item } from '../land-table/land-table.component';
 export class AddLandPopupComponent implements OnInit {
 
   constructor( public dialogRef: MatDialogRef<AddLandPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Item) { }
+  @Inject(MAT_DIALOG_DATA) public data: Item) { }
 
   ngOnInit() {
   }
-  onNoClick(): void {
+
+  public onNoClick(): void {
     this.dialogRef.close();
   }
 }
