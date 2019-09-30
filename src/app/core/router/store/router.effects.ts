@@ -45,11 +45,12 @@ export class RouterEffects{
         map((action: undoRedoAction.Undo) =>{
             if(action.payload.presentAction.type==='[Router] Go'){
                 this.routerStore.dispatch(
-                    new RouterStart({
+                    new RouterStart( {
                         navigateTo: new Navigation(
                             action.payload.presentAction.payload.navigatedFrom.path
                         )
-                    })
+                    }, true),
+
                 );
                 this.undoRedoStore.dispatch(new UndoSuccess())
             }
@@ -66,7 +67,7 @@ export class RouterEffects{
                         navigateTo: new Navigation(
                             action.payload.fututeAction.payload.navigatedTo.path
                         )
-                    })
+                    }, true)
                 );
                 this.undoRedoStore.dispatch(new RedoSuccess())
             }

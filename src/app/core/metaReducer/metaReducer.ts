@@ -19,7 +19,7 @@ export function actionSaver(reducer: ActionReducer<any>): ActionReducer<any> {
         isInProgress: false
       };
 
-    }else if(action.type.includes('[Router] Go') ){
+    }else if(action.type.includes('[Router] Go') && !action.isUndoRedoOperation ){
         const newPast = [...state.undoredo.history.past, action];
         state.undoredo = {
           ...state.undoRedo,
