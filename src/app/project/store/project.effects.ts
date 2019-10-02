@@ -75,7 +75,7 @@ export class ProjectEffects {
         ofType(undoRedoAction.UndoRedoActionTypes.UNDO),
         map((action: undoRedoAction.Undo) =>{
             if(action.payload.presentAction.type==='[Project Component] Add project Success'){
-                this.projectStore.dispatch(new projectActions.RemoveProject(action.payload.presentAction.payload.id))
+                this.projectStore.dispatch(new projectActions.RemoveProject(action.payload.presentAction.payload.id,true))
                 this.undoRedoStore.dispatch(new undoRedoAction.UndoSuccess())
             } else if(action.payload.presentAction.type==='[Project Component] Update project name Success'){
                 this.undoRedoStore.select(getLastProjectState).pipe(take(1)).subscribe((lastProjectState)=>{
