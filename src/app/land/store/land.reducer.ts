@@ -49,7 +49,8 @@ export function landReducer(state: LandState = initialState, action: LandActions
         case LandActionTypes.RemoveLandSuccess:
             return {
                 ...state,
-                landsColection: [...state.landsColection.slice(0, action.payload)]
+                // landsColection: [...state.landsColection.slice(0, action.payload)]
+                landsColection: [...state.landsColection.filter(l=> l.id !=action.payload)]
             }
         case LandActionTypes.RemoveLandFail:
             return {

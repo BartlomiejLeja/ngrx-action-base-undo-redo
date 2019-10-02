@@ -77,7 +77,7 @@ export class FakeProjectBackendInterceptor implements HttpInterceptor {
             // return ok();
             const projectId = body
             let projects = JSON.parse(localStorage.getItem("projects") || "[]");
-            let objIndex = projects.findIndex((obj => obj.id == projectId));
+            let objIndex = projects.findIndex((obj => obj.id == projectId.projectId));
             projects.splice(objIndex, 1);
             localStorage.setItem("projects", JSON.stringify(projects));
             return ok();

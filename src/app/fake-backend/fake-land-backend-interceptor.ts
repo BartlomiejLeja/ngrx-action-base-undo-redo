@@ -60,7 +60,7 @@ export class FakeLandBackendInterceptor implements HttpInterceptor {
         function deleteLand(){
             const landId = body
             let lands = JSON.parse(localStorage.getItem("lands") || "[]");
-            let objIndex = lands.findIndex((obj => obj.id == landId));
+            let objIndex = lands.findIndex((obj => obj.id == landId.landId));
             lands.splice(objIndex, 1);
             localStorage.setItem("lands", JSON.stringify(lands));
             return ok();

@@ -49,7 +49,7 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
         case ProjectActionTypes.RemoveProjectSuccess:
             return {
                 ...state,
-                projectsColection: [...state.projectsColection.slice(0, action.payload)]
+                projectsColection: [...state.projectsColection.filter(p=> p.id !=action.payload)]
             }
         case ProjectActionTypes.RemoveProjectFail:
             return {
