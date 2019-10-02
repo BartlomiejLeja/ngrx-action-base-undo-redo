@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { StateHistory } from 'src/app/core/undoredo/store/state/undoredo.model';
+import { StateHistory } from '../../core/undoredo/store/state/undoredo.model';
 import { Store, Action } from '@ngrx/store';
 import * as undoRedoAction from '../../core/undoredo/store/undoredo.action';
 import * as projectActions from '../store/project.action';
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ProjectDataService } from '../services/project-data.service';
 import { of } from 'rxjs';
 import { ProjectState } from './state/projectState.model';
-import { getLastProjectState } from 'src/app/core/undoredo/store/undoredo.reducer';
+import { getLastProjectState } from '../../core/undoredo/store/undoredo.reducer';
 @Injectable()
 export class ProjectEffects {
     

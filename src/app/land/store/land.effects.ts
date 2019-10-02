@@ -7,9 +7,9 @@ import { LandService } from '../services/land.service';
 import * as landActions from '../store/land.action';
 import * as undoRedoAction from '../../core/undoredo/store/undoredo.action';
 import { LandState } from './state/land.model';
-import { StateHistory } from 'src/app/core/undoredo/store/state/undoredo.model';
+import { StateHistory } from '../../core/undoredo/store/state/undoredo.model';
 import { UndoSuccess, RedoSuccess } from '../../core/undoredo/store/undoredo.action';
-import { getLastLandState } from 'src/app/core/undoredo/store/undoredo.reducer';
+import { getLastLandState } from '../../core/undoredo/store/undoredo.reducer';
 import * as _ from 'lodash';
 
 @Injectable()

@@ -1,8 +1,9 @@
 import { StateHistory, initialStateHistory, History } from './state/undoredo.model';
 import { UndoRedoActions, UndoRedoActionTypes } from './undoredo.action';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { landReducer } from 'src/app/land/store/land.reducer';
-import { projectReducer } from 'src/app/project/store/project.reducer';
+
+import { projectReducer } from '../../../project/store/project.reducer';
+import { landReducer } from '../../../land/store/land.reducer';
 
 const getUndoRedoSelector = createFeatureSelector<StateHistory>('undoredo');
 
