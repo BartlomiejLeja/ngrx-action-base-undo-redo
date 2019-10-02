@@ -11,6 +11,10 @@ import {
   MatButtonModule,
   MatDialogModule
   } from '@angular/material';
+import { EffectsModule } from '@ngrx/effects';
+import { ProjectEffects } from './store/project.effects';
+import { StoreModule } from '@ngrx/store';
+import { projectReducer } from './store/project.reducer';
 
 @NgModule({
   declarations: [ProjectTableComponent, AddProjectPopupComponent],
@@ -22,6 +26,8 @@ import {
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    StoreModule.forFeature('project', projectReducer),
+    EffectsModule.forFeature([ProjectEffects])
   ],
   entryComponents: [AddProjectPopupComponent],
 })

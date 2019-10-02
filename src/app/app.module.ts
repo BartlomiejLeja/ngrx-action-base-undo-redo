@@ -63,7 +63,7 @@ export const reducers: ActionReducerMap<RouterState> = {
       serializer: CustomSerializer
     } 
     ),
-    EntityDataModule.forRoot(entityConfig),
+    //EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
     fakeBackendProvider, fakeProjectBackendProvider

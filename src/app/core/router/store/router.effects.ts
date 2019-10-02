@@ -5,8 +5,6 @@ import { Store } from '@ngrx/store';
 import { getRouterSelector } from './router.selectore';
 import { map, tap } from 'rxjs/operators';
 import { RouterGo, RouterStart, Navigation } from './router.action';
-import { Observable } from 'rxjs';
-import { Action } from '@ngrx/store';
 import * as undoRedoAction from '../../undoredo/store/undoredo.action';
 import { StateHistory } from '../../undoredo/store/state/undoredo.model';
 import { UndoSuccess, RedoSuccess } from '../../undoredo/store/undoredo.action';

@@ -25,11 +25,12 @@ export class FakeProjectBackendInterceptor implements HttpInterceptor {
                 //     return register();
                 // case url.endsWith('/users/authenticate') && method === 'POST':
                 //     return authenticate();
-                case url.endsWith('/projects/') && method === 'GET':
+                case url.endsWith('/projects') && method === 'GET':
                     return getProjects();
                 
-                // case url.match(/\/lands\/\d+$/) && method === 'PATCH':
-                //         return changeUserName(items);
+                case url.match('/project') && method === 'PATCH':
+                    return changeProjectNamePatch();
+
                 case url.match('/project') && method === 'PUT':
                 return changeProjectName();
                 case url.match('/project') && method === 'POST':
@@ -48,6 +49,17 @@ export class FakeProjectBackendInterceptor implements HttpInterceptor {
             return ok(projects);
         }
 
+        
+        function changeProjectNamePatch() {
+            const projectBody = body
+            let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+            
+            let objIndex = projects.findIndex((obj => obj.id == projectBody.projectId));
+
+            projects[objIndex].projectName = projectBody.projectName;
+            localStorage.setItem("projects", JSON.stringify(projects));
+            return ok();
+        }
         function addProject(){
             const projectBody = body
             let projects = JSON.parse(localStorage.getItem("projects") || "[]");
@@ -57,7 +69,13 @@ export class FakeProjectBackendInterceptor implements HttpInterceptor {
         }
 
         function deleteProject(){
-            const projectId = idFromUrl()
+            // const projectId = idFromUrl()
+            // let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+            // let objIndex = projects.findIndex((obj => obj.id == projectId));
+            // projects.splice(objIndex, 1);
+            // localStorage.setItem("projects", JSON.stringify(projects));
+            // return ok();
+            const projectId = body
             let projects = JSON.parse(localStorage.getItem("projects") || "[]");
             let objIndex = projects.findIndex((obj => obj.id == projectId));
             projects.splice(objIndex, 1);

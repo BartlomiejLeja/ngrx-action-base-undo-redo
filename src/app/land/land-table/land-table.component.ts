@@ -6,6 +6,7 @@ import { LandState } from '../store/state/land.model';
 import { getlands } from '../store/land.reducer';
 import * as landActions from '../store/land.action';
 import { AddLandPopupComponent } from '../add-land-popup/add-land-popup.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-land-table',
@@ -55,7 +56,9 @@ export class LandTableComponent implements OnInit {
 
   checkEnterKey($event, item: Item){
     //this.landService.updateLandName(item.id, item.landName).subscribe();
-    this.landStore.dispatch(new landActions.UpdateLandName({landId: item.id, landName: item.landName}) )
+    let landId =item.id;
+    let landName =item.landName;
+    this.landStore.dispatch(new landActions.UpdateLandName({landId: landId, landName: landName}) )
     this.rowIdToEdit = null;
     
   }

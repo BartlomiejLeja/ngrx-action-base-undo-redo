@@ -21,21 +21,14 @@ export function landReducer(state: LandState = initialState, action: LandActions
                 ...state,
             }
         case LandActionTypes.UpdateLandNameSuccess:
+        let index = state.landsColection.map(land => land.id)
+        .indexOf(action.payload.landId);
+        let newLand = state.landsColection[index];
+        newLand.landName = action.payload.landName;
             return {
                 ...state,
-                // landsColection : state.landsColection.map((item, index) =>{
-                //     if (index !== action.payload.landId) {
-                //         // This isn't the item we care about - keep it as-is
-                //         item.landName = action.payload.landName;
-                //         return item
-                //       }
-                //     // Otherwise, this is the one we want - return an updated value
-                //     return {
-                //         ...item,
-                //         //landName : [action.payload.landName, ...item]
-                //     }
-                    
-                // })
+                landsColection:  state.landsColection.map(land => land.id===action.payload.landId ? land = newLand : land)
+                
             }
         case LandActionTypes.UpdateLandNameFail:
             return {

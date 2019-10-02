@@ -1,5 +1,5 @@
 <h2>You can add, delete or update projects by right click</h2>
-<table mat-table [dataSource]="projects$ | async" class="mat-elevation-z8">
+<table mat-table [dataSource]="projectCollectionStore" class="mat-elevation-z8">
 	<ng-container matColumnDef="projectName">
 		<th mat-header-cell *matHeaderCellDef> Project name </th>
 		<td mat-cell *matCellDef="let item" (contextmenu)="onContextMenu($event, item)">

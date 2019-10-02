@@ -6,8 +6,10 @@ import {
 import { Project } from '../models/project.model';
 
 @Injectable({ providedIn: 'root' })
-export class ProjectService extends EntityCollectionServiceBase<Project> {
-  constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('Project', serviceElementsFactory);
-  }
+export class ProjectService 
+// extends EntityCollectionServiceBase<Project>
+ {
+  // constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
+  //   super('Project', serviceElementsFactory);
+  // }
 }

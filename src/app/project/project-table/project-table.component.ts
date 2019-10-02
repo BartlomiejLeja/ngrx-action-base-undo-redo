@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Observable } from 'rxjs';
-import { Project } from '../models/project.model';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { AddProjectPopupComponent } from '../add-project-popup/add-project-popup.component';
+import { Project, ProjectState } from '../store/state/projectState.model';
+import { Store } from '@ngrx/store';
+import * as projectActions from '../store/project.action';
+import { getProjects } from '../store/project.reducer';
 
 @Component({
   selector: 'app-project-table',
@@ -16,6 +19,7 @@ export class ProjectTableComponent implements OnInit {
   public projects$: Observable<Project[]>;
   public projects: Project[];
   private rowIdToEdit: number
+  public projectCollectionStore : Project[];
 
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
@@ -33,28 +37,37 @@ export class ProjectTableComponent implements OnInit {
   rowEditable(item: number) : boolean{
     return this.rowIdToEdit === item;
   }
-  constructor(private projectService: ProjectService, public dialog: MatDialog) { }
+  constructor(
+    //private projectService: ProjectService, 
+    public dialog: MatDialog,
+    private projectStore: Store<ProjectState>, ) { }
 
   ngOnInit() {
-    this.projects$ = this.projectService.entities$;
-    this.projectService.getAll().subscribe((p)=>{
-      this.projects = p;
-    }); 
+    //this.projects$ = this.projectService.entities$;
+    // this.projectService.getAll().subscribe((p)=>{
+    //   this.projects = p;
+    // }); 
+    this.projectStore.dispatch(new projectActions.GetProjects() )
+    this.projectStore.select(getProjects).subscribe(p =>
+      this.projectCollectionStore = p
+      )
   }
 
   onContextMenuUpdateName(item: Project) {
     this.rowIdToEdit = item.id;
   }
 
-  checkEnterKey($event, item: Project){
+  checkEnterKey($event, project: Project){
     //this.landService.updateLandName(item.id, item.landName).subscribe();
     // this.landStore.dispatch(new landActions.UpdateLandName({landId: item.id, landName: item.landName}) )
-    this.projectService.update(item);
+    //this.projectService.update(item);
+    this.projectStore.dispatch(new projectActions.UpdateProjectName({projectId: project.id, projectName: project.projectName}) )
     this.rowIdToEdit = null;
   }
 
   onContextMenuRemoveLand(item: Project) {
-    this.projectService.delete(item, {tag: 'Undo delete'});
+    //this.projectService.delete(item);
+    this.projectStore.dispatch(new projectActions.RemoveProject(item.id))
 
   }
 
@@ -68,10 +81,11 @@ export class ProjectTableComponent implements OnInit {
       console.log('The dialog was closed');
       console.log(result);
       let project = result as Project 
-      project.id = this.projects.length;
+      project.id = this.projectCollectionStore.length;
       project.numberOfLands = +result.numberOfLands;
       project.profit = +result.profit;
-      this.projectService.add(project)
+      //this.projectService.add(project)
+      this.projectStore.dispatch(new projectActions.AddProject(project))
     });
   }
 
