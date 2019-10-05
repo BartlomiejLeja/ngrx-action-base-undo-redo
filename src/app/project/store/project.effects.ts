@@ -10,7 +10,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ProjectDataService } from '../services/project-data.service';
 import { of } from 'rxjs';
 import { ProjectState } from './state/projectState.model';
-import { getLastProjectState } from '../../core/undoredo/store/undoredo.reducer';
+import { getLastProjectState } from 'src/app/core/undoredo/store/undoredo.selector';
+
 @Injectable()
 export class ProjectEffects {
     

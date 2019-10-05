@@ -1,93 +1,6 @@
 import { StateHistory, initialStateHistory, History } from './state/undoredo.model';
 import { UndoRedoActions, UndoRedoActionTypes } from './undoredo.action';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { projectReducer } from '../../../project/store/project.reducer';
-import { landReducer } from '../../../land/store/land.reducer';
 import * as _ from 'lodash';
-
-const getUndoRedoSelector = createFeatureSelector<StateHistory>('undoredo');
-
-export const getPresentAction = createSelector(
-  getUndoRedoSelector,
-  state => state.history.past[state.history.past.length-1]
-)
-
-export const getFututeAction = createSelector(
-  getUndoRedoSelector,
-  state => state.history.future[0]
-)
-
-export const checkIfPastHistoryExist = createSelector(
-  getUndoRedoSelector,
-  state => chceckIfUndoRedoPossible(state)
-)
-
-export const chceckIfFutureHistoryExist = createSelector(
-  getUndoRedoSelector,
-  state => state.history.future.length > 0
-)
-
-export const getLastLandState = createSelector(
-  getUndoRedoSelector,
-  state => calculateLastLandState(state)
-);
-
-function calculateLastLandState(state: any): any{
-  let lastLandState = landReducer(
-    _.cloneDeep(state.history.past[0].payload),
-    _.cloneDeep(state.history.past[0])
-  );
-
-  for(
-    let actionIndex = 1;
-    actionIndex < state.history.past.length - 1;
-    actionIndex++
-  ){
-    lastLandState = landReducer(
-      _.cloneDeep(lastLandState),
-      _.cloneDeep(state.history.past[actionIndex])
-    );
-  }
- 
-  return lastLandState.landsColection;
-}
-
-
-export const getLastProjectState = createSelector(
-  getUndoRedoSelector,
-  state => calculateLastProjectState(state)
-)
-
-function calculateLastProjectState(state: any): any{
-  let lastProjectState = projectReducer(
-    _.cloneDeep(state.history.past[0].payload),
-    _.cloneDeep(state.history.past[0])
-  );
-
-  for(
-    let actionIndex = 1;
-    actionIndex < state.history.past.length - 1;
-    actionIndex++
-  ){
-    lastProjectState = projectReducer(
-      _.cloneDeep(lastProjectState),
-      _.cloneDeep(state.history.past[actionIndex])
-    );
-  }
- 
-  return lastProjectState.projectsColection;
-}
-
-function chceckIfUndoRedoPossible (state){
-    let isUndoRedoPossible = false;
-    state.history.past.forEach(element => {
-      if(!element.type.includes('Get')){
-        isUndoRedoPossible = true;
-      }
-    });
-
-    return isUndoRedoPossible;
-}
 
 function undo(state: any): History {
   const latestPast = state.past[state.past.length - 1]; // take last one
@@ -99,7 +12,6 @@ function undo(state: any): History {
     future: futureWithLatestPast
   };
 }
-
 
 function redo(state: any): History {
   const [latestFuture, ...futureWithoutLatest] = state.future;
@@ -139,19 +51,6 @@ export function undoRedoReducer(
           history: redo(state.history),
           isInProgress: false
         };
-      case UndoRedoActionTypes.UpdateUndoRedo:
-        return {
-          ...state,
-          history: {
-            past: action.payload,
-            future: []
-          }
-        };
-      // case UndoRedoActionTypes.ClearHistory:
-      //   return {
-      //     ...state,
-      //     history: clearHistory(state.history)
-      //   };
       default:
         return state;
     }

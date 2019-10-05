@@ -6,7 +6,6 @@ export enum UndoRedoActionTypes {
   UNDOSuccess = '[UndoRedo Component] UNDO Success',
   REDOSuccess = '[UndoRedo Component] REDO Success',
   UpdateUndoRedo = '[UndoRedo Component] Update undoredo',
-  ClearHistory = '[UndoRedo Component] ClearHistory'
 }
 
 export class Undo implements Action {
@@ -29,19 +28,8 @@ export class RedoSuccess implements Action {
   constructor() {}
 }
 
-export class UpdateUndoRedo implements Action {
-  public readonly type = UndoRedoActionTypes.UpdateUndoRedo;
-  constructor(public payload: any) {}
-}
-
-export class ClearHistory implements Action {
-  public readonly type = UndoRedoActionTypes.ClearHistory;
-  constructor() {}
-}
 export type UndoRedoActions =
   | Undo
   | Redo
   | UndoSuccess
   | RedoSuccess
-  | ClearHistory
-  | UpdateUndoRedo;

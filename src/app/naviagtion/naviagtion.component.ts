@@ -6,9 +6,10 @@ import { Store } from '@ngrx/store';
 import { RouterState } from '@ngrx/router-store';
 import { RouterStart, Navigation } from '../core/router/store/router.action';
 import { StateHistory } from '../core/undoredo/store/state/undoredo.model';
-import { getPresentAction, checkIfPastHistoryExist, chceckIfFutureHistoryExist, getFututeAction } from '../core/undoredo/store/undoredo.reducer';
+
 import { UndoRedoActionTypes } from '../core/undoredo/store/undoredo.action';
 import * as undoRedoAction from '../core/undoredo/store/undoredo.action'
+import { getPresentAction, getFututeAction, checkIfPastHistoryExist, chceckIfFutureHistoryExist } from '../core/undoredo/store/undoredo.selector';
 
 @Component({
   selector: 'app-naviagtion',

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
 import { Router} from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getRouterSelector } from './router.selectore';
+import { getRouterSelector } from './router.selector';
 import { map, tap } from 'rxjs/operators';
 import { RouterGo, RouterStart, Navigation } from './router.action';
 import * as undoRedoAction from '../../undoredo/store/undoredo.action';
