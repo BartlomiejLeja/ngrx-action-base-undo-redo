@@ -25,7 +25,7 @@
       <button mat-raised-button color="primary" (click)="undo()" >
         <mat-icon  
           [ngClass] = "{
-            'example-icon' : isUndoable,
+            'active-icon' : isUndoable,
             'non-active-icon' : !isUndoable 
           }"
          aria-hidden="false" aria-label="Example home icon">undo
@@ -35,7 +35,7 @@
       <button mat-raised-button color="primary" (click)="redo()">
       <mat-icon 
       [ngClass] = "{
-        'example-icon' : isRedoable,
+        'active-icon' : isRedoable,
         'non-active-icon' : !isRedoable 
       }"
       aria-hidden="false" aria-label="Example home icon">redo
