@@ -6,8 +6,6 @@ import { Store } from '@ngrx/store';
 import { RouterState } from '@ngrx/router-store';
 import { RouterStart, Navigation } from '../core/router/store/router.action';
 import { StateHistory } from '../core/undoredo/store/state/undoredo.model';
-
-import { UndoRedoActionTypes } from '../core/undoredo/store/undoredo.action';
 import * as undoRedoAction from '../core/undoredo/store/undoredo.action'
 import { getPresentAction, getFututeAction, checkIfPastHistoryExist, chceckIfFutureHistoryExist } from '../core/undoredo/store/undoredo.selector';
 
@@ -19,10 +17,11 @@ import { getPresentAction, getFututeAction, checkIfPastHistoryExist, chceckIfFut
 export class NaviagtionComponent implements OnInit{
   
   public presentAction: any;
-  public fututeAction: any;
-  public isUndouable: any;
-  public isRedoable: any;
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  public futureAction: any;
+  public isUndoable: boolean;
+  public isRedoable: boolean;
+
+  public isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
@@ -30,63 +29,43 @@ export class NaviagtionComponent implements OnInit{
   constructor(
     private breakpointObserver: BreakpointObserver, 
     private routerStore: Store<RouterState>,
-    private undoredoStore: Store<StateHistory>) {
-    let items = [
-      { id: 0, landName: 'Prokocim Górny', adress: 'Bieżanowska 3', areaInHektars: 10 },
-      { id: 1, landName: 'Prokocim Rynek',  adress: 'Bieżanowska 89', areaInHektars: 15 },
-      { id: 2, landName: 'Prokocim Cmentarz',  adress: 'Bieżanowska 188', areaInHektars: 20 }
-    ];
-
-    let projects = [
-      { id: 0, projectName: 'Apartamenty zielony Prokocim', numberOfLands: 3, profit: 100000 },
-      { id: 1, projectName: 'Wzgórza Prokocimskie',  numberOfLands: 10, profit: 150000 },
-      { id: 2, projectName: 'Prokocim multi housing',  numberOfLands: 45, profit: 200000 }
-    ]
-
-    localStorage.setItem("lands", JSON.stringify(items));
-    
-    localStorage.setItem("projects", JSON.stringify(projects));
+    private undoRedoStore: Store<StateHistory>) {
   }
 
-  
   ngOnInit(): void {
-   this.undoredoStore.select(getPresentAction).subscribe(
+   this.undoRedoStore.select(getPresentAction).subscribe(
      presentAction=>{
       this.presentAction = presentAction
      }
    );
 
-   this.undoredoStore.select(getFututeAction).subscribe(
+   this.undoRedoStore.select(getFututeAction).subscribe(
      futureAction =>{
-       this.fututeAction = futureAction
+       this.futureAction = futureAction
      }
    )
 
-  this.undoredoStore.select(checkIfPastHistoryExist).subscribe (
-      (is) =>{
-        this.isUndouable =is,
-        console.log(this.isUndouable);
-      } 
-    )
+  this.undoRedoStore.select(checkIfPastHistoryExist).subscribe (
+      (isPastHistoryExist) =>{
+        this.isUndoable =isPastHistoryExist
+      }
+  );
      
-  this.undoredoStore.select(chceckIfFutureHistoryExist).subscribe(
-    is =>{
-      this.isRedoable =is
-      console.log(this.isRedoable);
+  this.undoRedoStore.select(chceckIfFutureHistoryExist).subscribe(
+    isFutureHistoryExist =>{
+      this.isRedoable =isFutureHistoryExist
     } 
    );
   }
 
-  public routeTo(url: any): void {
-      let urlAddress = 'project'
-      if(url==1) urlAddress ='land'
+  public routeTo(url: string): void {
       this.routerStore.dispatch( new RouterStart({
-        navigateTo: new Navigation([urlAddress])
+        navigateTo: new Navigation([url])
       }));
   }
 
   public undo(): void{
-    this.undoredoStore.dispatch(
+    this.undoRedoStore.dispatch(
       new undoRedoAction.Undo({
         presentAction: this.presentAction
       })
@@ -94,9 +73,9 @@ export class NaviagtionComponent implements OnInit{
   }
 
   public redo(): void{
-    this.undoredoStore.dispatch(
+    this.undoRedoStore.dispatch(
       new undoRedoAction.Redo({
-        fututeAction: this.fututeAction
+        fututeAction: this.futureAction
       })
     )
   }
