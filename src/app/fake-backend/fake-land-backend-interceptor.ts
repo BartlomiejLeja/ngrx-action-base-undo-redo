@@ -3,10 +3,6 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-// array in local storage for registered users
-let users = JSON.parse(localStorage.getItem('users')) || [];
-
-
 @Injectable()
 export class FakeLandBackendInterceptor implements HttpInterceptor {
    
@@ -22,20 +18,13 @@ export class FakeLandBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                // case url.endsWith('/users/register') && method === 'POST':
-                //     return register();
-                // case url.endsWith('/users/authenticate') && method === 'POST':
-                //     return authenticate();
                 case url.endsWith('/lands') && method === 'GET':
                     return getLands();
-                
-                // case url.match(/\/lands\/\d+$/) && method === 'PATCH':
-                //         return changeUserName(items);
-                case url.match('/lands') && method === 'PATCH':
-                return changeUserName();
-                case url.match('/lands') && method === 'POST':
-                return addLand();
-                case url.match('/lands') && method === 'DELETE':
+                case url.match('/land') && method === 'PATCH':
+                    return changeLandName();
+                case url.match('/land') && method === 'POST':
+                    return addLand();
+                case url.match('/land') && method === 'DELETE':
                     return deleteLand();
                 default:
                     // pass through any requests not handled above
@@ -66,7 +55,7 @@ export class FakeLandBackendInterceptor implements HttpInterceptor {
             return ok();
         }
 
-        function changeUserName() {
+        function changeLandName() {
             const landBody = body
             let lands = JSON.parse(localStorage.getItem("lands") || "[]");
             
@@ -76,75 +65,9 @@ export class FakeLandBackendInterceptor implements HttpInterceptor {
             localStorage.setItem("lands", JSON.stringify(lands));
             return ok();
         }
-
-        function register() {
-            const user = body
-
-            if (users.find(x => x.username === user.username)) {
-                return error('Username "' + user.username + '" is already taken')
-            }
-
-            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
-            users.push(user);
-            localStorage.setItem('users', JSON.stringify(users));
-
-            return ok();
-        }
-
-        function authenticate() {
-            const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
-            if (!user) return error('Username or password is incorrect');
-            return ok({
-                id: user.id,
-                username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                token: 'fake-jwt-token'
-            })
-        }
-
-        function getUsers() {
-            if (!isLoggedIn()) return unauthorized();
-            return ok(users);
-        }
-
-        function getUserById() {
-            if (!isLoggedIn()) return unauthorized();
-
-            const user = users.find(x => x.id == idFromUrl());
-            return ok(user);
-        }
-
-        function deleteUser() {
-            if (!isLoggedIn()) return unauthorized();
-
-            users = users.filter(x => x.id !== idFromUrl());
-            localStorage.setItem('users', JSON.stringify(users));
-            return ok();
-        }
-
-        // helper functions
-
+    
         function ok(body?) {
             return of(new HttpResponse({ status: 200, body }))
-        }
-
-        function unauthorized() {
-            return throwError({ status: 401, error: { message: 'Unauthorised' } });
-        }
-
-        function error(message) {
-            return throwError({ error: { message } });
-        }
-
-        function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
-        }
-
-        function idFromUrl() {
-            const urlParts = url.split('/');
-            return parseInt(urlParts[urlParts.length - 1]);
         }
     }
 }

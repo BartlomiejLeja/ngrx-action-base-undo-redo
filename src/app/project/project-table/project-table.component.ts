@@ -38,15 +38,10 @@ export class ProjectTableComponent implements OnInit {
     return this.rowIdToEdit === item;
   }
   constructor(
-    //private projectService: ProjectService, 
     public dialog: MatDialog,
     private projectStore: Store<ProjectState>, ) { }
 
   ngOnInit() {
-    //this.projects$ = this.projectService.entities$;
-    // this.projectService.getAll().subscribe((p)=>{
-    //   this.projects = p;
-    // }); 
     this.projectStore.dispatch(new projectActions.GetProjects() )
     this.projectStore.select(getProjects).subscribe(p =>
       this.projectCollectionStore = p
@@ -58,15 +53,11 @@ export class ProjectTableComponent implements OnInit {
   }
 
   checkEnterKey($event, project: Project){
-    //this.landService.updateLandName(item.id, item.landName).subscribe();
-    // this.landStore.dispatch(new landActions.UpdateLandName({landId: item.id, landName: item.landName}) )
-    //this.projectService.update(item);
     this.projectStore.dispatch(new projectActions.UpdateProjectName({projectId: project.id, projectName: project.projectName}) )
     this.rowIdToEdit = null;
   }
 
   onContextMenuRemoveLand(item: Project) {
-    //this.projectService.delete(item);
     this.projectStore.dispatch(new projectActions.RemoveProject(item.id))
 
   }

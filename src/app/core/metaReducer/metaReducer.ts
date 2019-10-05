@@ -5,8 +5,6 @@ export const metaReducers:  MetaReducer<any>[] = [actionSaver];
 
 export function actionSaver(reducer: ActionReducer<any>): ActionReducer<any> {
   return function(state, action: any) {
-    // console.log('state', state);
-    // console.log('action', action);
     if((action.type.includes('[Project] @ngrx/data/query-all/success') || 
        action.type.includes('[Land] @ngrx/data/query-all/success')) && 
        !isTheSameGet(state, action)){

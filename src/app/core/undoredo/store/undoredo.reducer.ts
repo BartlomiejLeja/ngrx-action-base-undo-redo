@@ -1,9 +1,9 @@
 import { StateHistory, initialStateHistory, History } from './state/undoredo.model';
 import { UndoRedoActions, UndoRedoActionTypes } from './undoredo.action';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-
 import { projectReducer } from '../../../project/store/project.reducer';
 import { landReducer } from '../../../land/store/land.reducer';
+import * as _ from 'lodash';
 
 const getUndoRedoSelector = createFeatureSelector<StateHistory>('undoredo');
 
@@ -34,8 +34,8 @@ export const getLastLandState = createSelector(
 
 function calculateLastLandState(state: any): any{
   let lastLandState = landReducer(
-    state.history.past[0].payload,
-    state.history.past[0]
+    _.cloneDeep(state.history.past[0].payload),
+    _.cloneDeep(state.history.past[0])
   );
 
   for(
@@ -44,8 +44,8 @@ function calculateLastLandState(state: any): any{
     actionIndex++
   ){
     lastLandState = landReducer(
-      lastLandState,
-      state.history.past[actionIndex]
+      _.cloneDeep(lastLandState),
+      _.cloneDeep(state.history.past[actionIndex])
     );
   }
  
@@ -60,8 +60,8 @@ export const getLastProjectState = createSelector(
 
 function calculateLastProjectState(state: any): any{
   let lastProjectState = projectReducer(
-    state.history.past[0].payload,
-    state.history.past[0]
+    _.cloneDeep(state.history.past[0].payload),
+    _.cloneDeep(state.history.past[0])
   );
 
   for(
@@ -70,8 +70,8 @@ function calculateLastProjectState(state: any): any{
     actionIndex++
   ){
     lastProjectState = projectReducer(
-      lastProjectState,
-      state.history.past[actionIndex]
+      _.cloneDeep(lastProjectState),
+      _.cloneDeep(state.history.past[actionIndex])
     );
   }
  

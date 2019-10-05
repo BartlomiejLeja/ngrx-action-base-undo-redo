@@ -15,14 +15,14 @@ export class LandService {
     }
 
     public updateLandName (landId: number, landName: string) : Observable<any> {
-        return this.http.patch(`/api/lands`,{
+        return this.http.patch(`/api/land`,{
             landId: landId,
             landName: landName
         })
     }
 
     public addLand (land: Item)  : Observable<any>{
-        return this.http.post(`/api/lands`, land);
+        return this.http.post(`/api/land`, land);
     }
 
     public deleteLand (landId: number) : Observable<any>{
@@ -34,6 +34,6 @@ export class LandService {
                 landId: landId
             }
           }
-        return this.http.delete(`/api/lands`,options);
+        return this.http.delete(`/api/land`,options);
     }
 }
