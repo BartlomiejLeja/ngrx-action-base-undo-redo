@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Project } from './state/projectState.model';
+import { Project } from './state/project.model';
 
 export enum ProjectActionTypes {
     GetProjects = '[Project] Get projects',

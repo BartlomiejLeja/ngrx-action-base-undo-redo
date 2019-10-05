@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectTableComponent } from './project-table/project-table.component';
 import { AddProjectPopupComponent } from './add-project-popup/add-project-popup.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   MatTableModule,
@@ -24,6 +24,7 @@ import { projectReducer } from './store/project.reducer';
     MatMenuModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
     StoreModule.forFeature('project', projectReducer),

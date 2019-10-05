@@ -9,19 +9,16 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./add-land-popup.component.css']
 })
 export class AddLandPopupComponent implements OnInit {
+  public landName = new FormControl('', [Validators.required]);
+  public landAdress = new FormControl('', [Validators.required]);
+  public landArea = new FormControl('', [Validators.required]);
 
   constructor( public dialogRef: MatDialogRef<AddLandPopupComponent>,
   @Inject(MAT_DIALOG_DATA) public data: Land) { }
 
-  ngOnInit() {
-  }
-
-  landName = new FormControl('', [Validators.required]);
-  landAdress = new FormControl('', [Validators.required]);
-  landArea = new FormControl('', [Validators.required]);
+  ngOnInit() {}
 
   public onNoClick(): void {
-    // this.landAddFormGroup.
       this.dialogRef.close();
   }
 }

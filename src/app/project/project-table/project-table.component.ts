@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProjectService } from '../services/project.service';
 import { Observable } from 'rxjs';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { AddProjectPopupComponent } from '../add-project-popup/add-project-popup.component';
-import { Project, ProjectState } from '../store/state/projectState.model';
+import { Project, ProjectState } from '../store/state/project.model';
 import { Store } from '@ngrx/store';
 import * as projectActions from '../store/project.action';
 import { getProjects } from '../store/project.reducer';

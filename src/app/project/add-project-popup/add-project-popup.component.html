@@ -2,18 +2,24 @@
 <div mat-dialog-content>
   <mat-form-field>
     <p>Name</p>
-    <input matInput [(ngModel)]="data.projectName">
+    <input matInput [(ngModel)]="data.projectName" [formControl]="projectName">
   </mat-form-field>
   <mat-form-field>
     <p>Number of lands</p>
-    <input matInput [(ngModel)]="data.numberOfLands">
+    <input matInput type="number" [(ngModel)]="data.numberOfLands" [formControl]="projectNumberOfLands">
   </mat-form-field>
   <mat-form-field>
     <p>Profit</p>
-    <input matInput [(ngModel)]="data.profit">
+    <input matInput type="number" [(ngModel)]="data.profit" [formControl]="projectProfit">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+
+    <button *ngIf="!projectName.invalid && !projectNumberOfLands.invalid && !projectProfit.invalid" 
+            mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial> Save project
+    </button> 
+    <button *ngIf="projectName.invalid || projectNumberOfLands.invalid || projectProfit.invalid" 
+              mat-raised-button disabled > Save land
+    </button>
 </div>

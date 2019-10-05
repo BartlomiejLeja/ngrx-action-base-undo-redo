@@ -5,11 +5,10 @@ import { Store, Action } from '@ngrx/store';
 import * as undoRedoAction from '../../core/undoredo/store/undoredo.action';
 import * as projectActions from '../store/project.action';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
-import { ProjectService } from '../services/project.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProjectDataService } from '../services/project-data.service';
 import { of } from 'rxjs';
-import { ProjectState } from './state/projectState.model';
+import { ProjectState } from './state/project.model';
 import { getLastProjectState } from 'src/app/core/undoredo/store/undoredo.selector';
 
 @Injectable()
@@ -125,7 +124,6 @@ export class ProjectEffects {
     private lastProjectState: any;
     constructor(
         private action$: Actions,
-        private projectService: ProjectService,
         private undoRedoStore: Store<StateHistory>,
         private projectDataService: ProjectDataService,
         private projectStore: Store<ProjectState>,

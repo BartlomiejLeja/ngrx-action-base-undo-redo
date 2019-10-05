@@ -3,7 +3,7 @@ import { Effect, ofType, Actions } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action, Store } from '@ngrx/store';
 import { switchMap, map, catchError, take } from 'rxjs/operators';
-import { LandService } from '../services/land.service';
+import { LandService } from '../services/land-data.service';
 import * as landActions from '../store/land.action';
 import * as undoRedoAction from '../../core/undoredo/store/undoredo.action';
 import { LandState } from './state/land.model';

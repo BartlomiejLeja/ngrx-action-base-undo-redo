@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
-import { LandService } from '../services/land.service';
+import { LandService } from '../services/land-data.service';
 import { Store } from '@ngrx/store';
 import { LandState, Land } from '../store/state/land.model';
 import * as landActions from '../store/land.action';
