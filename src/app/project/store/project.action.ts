@@ -2,9 +2,9 @@ import { Action } from '@ngrx/store';
 import { Project } from './state/projectState.model';
 
 export enum ProjectActionTypes {
-    GetProjects = '[Project] @ngrx/data/query-all',
-    GetProjectsSuccess  = '[Project] @ngrx/data/query-all/success',
-    GetProjectsFail = '[Project] @ngrx/data/query-all/fail',
+    GetProjects = '[Project] Get projects',
+    GetProjectsSuccess  = '[Project] Get projects Success',
+    GetProjectsFail = '[Project] Get projects Fail',
     UpdateProjectName = '[Project Component] Update project name',
     UpdateProjectNameSuccess = '[Project Component] Update project name Success',
     UpdateProjectNameFail = '[Project Component] Update project name Fail',

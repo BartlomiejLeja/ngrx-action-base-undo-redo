@@ -2,9 +2,9 @@ import { Action } from '@ngrx/store';
 import { Land } from './state/land.model';
 
 export enum LandActionTypes {
-    GetLands = '[Land] @ngrx/data/query-all',
-    GetLandsSuccess  = '[Land] @ngrx/data/query-all/success',
-    GetLandsFail = '[Land] @ngrx/data/query-all/fail',
+    GetLands = '[Land] Get lands',
+    GetLandsSuccess  = '[Land] Get lands Success',
+    GetLandsFail = '[Land] Get lands Fail',
     UpdateLandName = '[Land Component] Update land name',
     UpdateLandNameSuccess = '[Land Component] Update land name Success',
     UpdateLandNameFail = '[Land Component] Update land name Fail',

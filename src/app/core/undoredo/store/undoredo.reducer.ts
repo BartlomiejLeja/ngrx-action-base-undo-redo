@@ -81,7 +81,7 @@ function calculateLastProjectState(state: any): any{
 function chceckIfUndoRedoPossible (state){
     let isUndoRedoPossible = false;
     state.history.past.forEach(element => {
-      if(!element.type.includes('query-all')){
+      if(!element.type.includes('Get')){
         isUndoRedoPossible = true;
       }
     });
