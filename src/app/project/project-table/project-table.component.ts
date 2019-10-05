@@ -1,23 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { AddProjectPopupComponent } from '../add-project-popup/add-project-popup.component';
 import { Project, ProjectState } from '../store/state/project.model';
 import { Store } from '@ngrx/store';
 import * as projectActions from '../store/project.action';
 import { getProjects } from '../store/project.selector';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project-table',
   templateUrl: './project-table.component.html',
   styleUrls: ['./project-table.component.css']
 })
-export class ProjectTableComponent implements OnInit {
+export class ProjectTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger)
   public contextMenu: MatMenuTrigger;
   public displayedColumns: string[] = ['projectName', 'numberOfLands', 'profit'];
   public projectCollectionStore : Project[];
   public contextMenuPosition = { x: '0px', y: '0px' };
   private rowIdToEdit: number
+  private projectSubscription: Subscription;
  
   constructor(
     public dialog: MatDialog,
@@ -25,7 +27,7 @@ export class ProjectTableComponent implements OnInit {
 
   ngOnInit() {
     this.projectStore.dispatch(new projectActions.GetProjects() )
-    this.projectStore.select(getProjects).subscribe(projects =>
+    this.projectSubscription = this.projectStore.select(getProjects).subscribe(projects =>
       this.projectCollectionStore = projects
       )
   }
@@ -71,4 +73,8 @@ export class ProjectTableComponent implements OnInit {
       this.projectStore.dispatch(new projectActions.AddProject(project))
     });
   }
+
+   public ngOnDestroy(): void {
+    this.projectSubscription .unsubscribe();
+ }
 }

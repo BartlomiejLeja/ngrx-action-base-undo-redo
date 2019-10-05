@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { LandState, Land } from '../store/state/land.model';
@@ -6,19 +6,21 @@ import * as landActions from '../store/land.action';
 import { AddLandPopupComponent } from '../add-land-popup/add-land-popup.component';
 import * as _ from 'lodash';
 import { getlands } from '../store/land.selector';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-land-table',
   templateUrl: './land-table.component.html',
   styleUrls: ['./land-table.component.css']
 })
-export class LandTableComponent implements OnInit {
+export class LandTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger)
   public contextMenu: MatMenuTrigger;
   public landCollectionStore : Land[];
   public displayedColumns: string[] = ['landName', 'adress', 'areaInHektars'];
   private rowIdToEdit: number
   private contextMenuPosition = { x: '0px', y: '0px' };
+  private landSubscription: Subscription;
 
   constructor (
     private landStore: Store<LandState>, 
@@ -26,7 +28,7 @@ export class LandTableComponent implements OnInit {
 
   public ngOnInit() :void{
     this.landStore.dispatch(new landActions.GetLands() )
-    this.landStore.select(getlands).subscribe(lands =>
+    this.landSubscription = this.landStore.select(getlands).subscribe(lands =>
       this.landCollectionStore = lands
       )
   }
@@ -69,4 +71,8 @@ export class LandTableComponent implements OnInit {
       this.landStore.dispatch(new landActions.AddLand(land))
     });
   }
+
+  public ngOnDestroy(): void {
+    this.landSubscription.unsubscribe();
+ }
 }
