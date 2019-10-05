@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Project } from '../store/state/project.model';
 import { FormControl, Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-add-project-popup',
   templateUrl: './add-project-popup.component.html',
@@ -15,9 +14,8 @@ export class AddProjectPopupComponent implements OnInit {
   public projectProfit = new FormControl('', [Validators.required]);
 
   constructor(public dialogRef: MatDialogRef<AddProjectPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Project) { }
+              @Inject(MAT_DIALOG_DATA) public data: Project) { }
 
-  
   ngOnInit() {
   }
 

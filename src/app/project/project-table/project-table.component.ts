@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { AddProjectPopupComponent } from '../add-project-popup/add-project-popup.component';
 import { Project, ProjectState } from '../store/state/project.model';
 import { Store } from '@ngrx/store';
 import * as projectActions from '../store/project.action';
-import { getProjects } from '../store/project.reducer';
+import { getProjects } from '../store/project.selector';
 
 @Component({
   selector: 'app-project-table',
@@ -13,19 +12,25 @@ import { getProjects } from '../store/project.reducer';
   styleUrls: ['./project-table.component.css']
 })
 export class ProjectTableComponent implements OnInit {
-
-  public displayedColumns: string[] = ['projectName', 'numberOfLands', 'profit'];
-  public projects$: Observable<Project[]>;
-  public projects: Project[];
-  private rowIdToEdit: number
-  public projectCollectionStore : Project[];
-
   @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
+  public contextMenu: MatMenuTrigger;
+  public displayedColumns: string[] = ['projectName', 'numberOfLands', 'profit'];
+  public projectCollectionStore : Project[];
+  public contextMenuPosition = { x: '0px', y: '0px' };
+  private rowIdToEdit: number
+ 
+  constructor(
+    public dialog: MatDialog,
+    private projectStore: Store<ProjectState>) { }
 
-  contextMenuPosition = { x: '0px', y: '0px' };
+  ngOnInit() {
+    this.projectStore.dispatch(new projectActions.GetProjects() )
+    this.projectStore.select(getProjects).subscribe(projects =>
+      this.projectCollectionStore = projects
+      )
+  }
 
-  onContextMenu(event: MouseEvent, item: Project) {
+  public onContextMenu(event: MouseEvent, item: Project): void {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
@@ -33,32 +38,21 @@ export class ProjectTableComponent implements OnInit {
     this.contextMenu.openMenu();
   }
 
-  rowEditable(item: number) : boolean{
-    return this.rowIdToEdit === item;
-  }
-  constructor(
-    public dialog: MatDialog,
-    private projectStore: Store<ProjectState>, ) { }
-
-  ngOnInit() {
-    this.projectStore.dispatch(new projectActions.GetProjects() )
-    this.projectStore.select(getProjects).subscribe(p =>
-      this.projectCollectionStore = p
-      )
+  public rowEditable(rowNumber: number) : boolean{
+    return this.rowIdToEdit === rowNumber;
   }
 
-  onContextMenuUpdateName(item: Project) {
-    this.rowIdToEdit = item.id;
+  public onContextMenuUpdateName(project: Project): void {
+    this.rowIdToEdit = project.id;
   }
 
-  checkEnterKey($event, project: Project){
+  public checkEnterKey($event, project: Project): void {
     this.projectStore.dispatch(new projectActions.UpdateProjectName({projectId: project.id, projectName: project.projectName}) )
     this.rowIdToEdit = null;
   }
 
-  onContextMenuRemoveLand(item: Project) {
+  public onContextMenuRemoveLand(item: Project): void {
     this.projectStore.dispatch(new projectActions.RemoveProject(item.id))
-
   }
 
   public openDialog(): void {
@@ -74,9 +68,7 @@ export class ProjectTableComponent implements OnInit {
       project.id = this.projectCollectionStore.length;
       project.numberOfLands = +result.numberOfLands;
       project.profit = +result.profit;
-      //this.projectService.add(project)
       this.projectStore.dispatch(new projectActions.AddProject(project))
     });
   }
-
 }

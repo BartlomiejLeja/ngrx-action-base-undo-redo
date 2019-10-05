@@ -1,13 +1,5 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { ProjectState, initialState } from './state/project.model';
 import { ProjectActions, ProjectActionTypes } from './project.action';
-
-const getProjectSelector = createFeatureSelector<ProjectState>('project');
-
-export const getProjects = createSelector(
-    getProjectSelector,
-    state => state.projectsColection
-)
 
 export function projectReducer(state: ProjectState = initialState, action: ProjectActions ): ProjectState{
     switch (action.type){
@@ -21,13 +13,12 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
                 ...state,
             }
         case ProjectActionTypes.UpdateProjectNameSuccess:
-            let index = state.projectsColection.map(project => project.id)
-            .indexOf(action.payload.projectId);
+            let index = state.projectsColection.map(project => project.id).indexOf(action.payload.projectId);
             let newProject = state.projectsColection[index];
             newProject.projectName = action.payload.projectName;
-                return {
-                    ...state,
-                    projectsColection: state.projectsColection.map(project => project.id===action.payload.projectId ? project = newProject : project)
+            return {
+                ...state,
+                 projectsColection: state.projectsColection.map(project => project.id===action.payload.projectId ? project = newProject : project)
                     
                 }
         case ProjectActionTypes.UpdateProjectNameFail:

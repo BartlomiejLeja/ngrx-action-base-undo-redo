@@ -34,7 +34,7 @@ export class ProjectEffects {
             this.projectDataService.addProject(action.payload)
             .pipe(
                 map(
-                    project => new projectActions.AddProjectSuccess(action.payload,action.isUndoRedoOperation)
+                    () => new projectActions.AddProjectSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new projectActions.AddProjectFail()))
             )
@@ -48,7 +48,7 @@ export class ProjectEffects {
             this.projectDataService.updateProjectName(action.payload.projectId,action.payload.projectName)
             .pipe(
                 map(
-                    lands => new projectActions.UpdateProjectNameSuccess(action.payload,action.isUndoRedoOperation)
+                    () => new projectActions.UpdateProjectNameSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new projectActions.UpdateProjectNameFail()))
             )
@@ -63,7 +63,7 @@ export class ProjectEffects {
             this.projectDataService.deleteProject(action.payload)
             .pipe(
                 map(
-                    lands => new projectActions.RemoveProjectSuccess(action.payload,action.isUndoRedoOperation)
+                    () => new projectActions.RemoveProjectSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new projectActions.RemoveProjectFail()))
             )
@@ -97,8 +97,7 @@ export class ProjectEffects {
                 })
                 this.undoRedoStore.dispatch(new undoRedoAction.UndoSuccess())
             }
-        }
-    )
+        })
     )
 
     @Effect({ dispatch: false })
@@ -106,7 +105,6 @@ export class ProjectEffects {
         ofType(undoRedoAction.UndoRedoActionTypes.REDO),
         map((action: undoRedoAction.Redo) =>{
             if(action.payload.fututeAction.type==='[Project Component] Add project Success'){
-                //this.projectService.add(action.payload.fututeAction.payload.data, {tag: 'Redo add'}),
                 this.projectStore.dispatch(new projectActions.AddProject(action.payload.fututeAction.payload, true))
                 this.undoRedoStore.dispatch(new undoRedoAction.RedoSuccess())
             }else if (action.payload.fututeAction.type==='[Project Component] Update project name Success'){
@@ -118,8 +116,7 @@ export class ProjectEffects {
                 this.projectStore.dispatch(new projectActions.RemoveProject(action.payload.fututeAction.payload,true))
                 this.undoRedoStore.dispatch(new undoRedoAction.RedoSuccess())
             }
-        }
-    )
+        })
     )
     private lastProjectState: any;
     constructor(
@@ -127,6 +124,5 @@ export class ProjectEffects {
         private undoRedoStore: Store<StateHistory>,
         private projectDataService: ProjectDataService,
         private projectStore: Store<ProjectState>,
-    ) {
-    }
+    ) {}
 }

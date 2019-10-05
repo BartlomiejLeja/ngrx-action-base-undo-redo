@@ -13,15 +13,15 @@ export class ProjectDataService {
         return this.http.get(`/api/projects`)
     }
 
+    public addProject (project: Project)  : Observable<any>{
+        return this.http.post(`/api/project`, project);
+    }
+
     public updateProjectName (projectId: number, projectName: string) : Observable<any> {
         return this.http.patch(`/api/project`,{
             projectId: projectId,
             projectName: projectName
         })
-    }
-
-    public addProject (project: Project)  : Observable<any>{
-        return this.http.post(`/api/project`, project);
     }
 
     public deleteProject (projectId: number) : Observable<any>{

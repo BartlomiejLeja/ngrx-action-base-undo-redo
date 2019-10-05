@@ -14,7 +14,7 @@ export class AddLandPopupComponent implements OnInit {
   public landArea = new FormControl('', [Validators.required]);
 
   constructor( public dialogRef: MatDialogRef<AddLandPopupComponent>,
-  @Inject(MAT_DIALOG_DATA) public data: Land) { }
+              @Inject(MAT_DIALOG_DATA) public data: Land) { }
 
   ngOnInit() {}
 
