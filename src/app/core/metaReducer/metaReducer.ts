@@ -4,14 +4,14 @@ import * as projectActions from '../../project/store/project.action';
 import * as routerAction from '../router/store/router.action'
 import * as _ from 'lodash';
 
-export const metaReducers:  MetaReducer<any>[] = [undoRedoActionSaver];
+export const metaReducers: MetaReducer<any>[] = [undoRedoActionSave];
 
-export function undoRedoActionSaver(reducer: ActionReducer<any>): ActionReducer<any> {
+export function undoRedoActionSave(reducer: ActionReducer<any>): ActionReducer<any> {
   return function(state, action: any) {
     if((action.type.includes(projectActions.ProjectActionTypes.GetProjectsSuccess) || 
        action.type.includes(landActions.LandActionTypes.GetLandsSuccess)) && 
        !isDuplicatedGetAction(state, action)){
-      const newPast = insertGetAction(state.undoredo.history.past, action);
+      const newPast = pushGetActionToPastArray(state.undoredo.history.past, action);
       state.undoredo = {
         ...state.undoRedo,
         history: {
@@ -47,7 +47,7 @@ export function undoRedoActionSaver(reducer: ActionReducer<any>): ActionReducer<
   };
 }
 
-function insertGetAction(past: any[] , action: any): Array<any>{
+function pushGetActionToPastArray(past: any[] , action: any): Array<any>{
   let newPast = [...past];
   newPast.splice(0,0,action);
   return newPast;

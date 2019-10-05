@@ -8,6 +8,7 @@ import { RouterGo, RouterStart, Navigation } from './router.action';
 import * as undoRedoAction from '../../undoredo/store/undoredo.action';
 import { StateHistory } from '../../undoredo/store/state/undoredo.model';
 import { UndoSuccess, RedoSuccess } from '../../undoredo/store/undoredo.action';
+import * as routerAction from '../store/router.action'
 
 @Injectable()
 export class RouterEffects{
@@ -15,25 +16,25 @@ export class RouterEffects{
 
     @Effect({ dispatch: false })
     public navigate$ = this.action$.pipe(
-        ofType('[Router] Go'),
+        ofType(routerAction.RouterActionTypes.RouterGo),
         map((action: RouterGo) => action.payload.navigatedTo),
         tap(({ path, queryParams, extras }) =>
-        this.router.navigate(path, { queryParams, ...extras })
+            this.router.navigate(path, { queryParams, ...extras })
         )
     );
 
     @Effect({ dispatch: false })
     public navigateStart$  = this.action$.pipe(
-        ofType('[Router] Router Start'),
+        ofType(routerAction.RouterActionTypes.RouterStart),
         map((action: RouterStart) => action),
         tap(action => {
-        const payload = {
-            navigatedTo: action.payload.navigateTo,
-            navigatedFrom: new Navigation([this.presentRoute.router.state.url])
-        };
-        this.routerStore.dispatch(
-            new RouterGo(payload, action.isUndoRedoOperation)
-        );
+            const payload = {
+                navigatedTo: action.payload.navigateTo,
+                navigatedFrom: new Navigation([this.presentRoute.router.state.url])
+            };
+            this.routerStore.dispatch(
+                new RouterGo(payload, action.isUndoRedoOperation)
+            );
         })
     );
 
@@ -41,14 +42,13 @@ export class RouterEffects{
     public undoNavigation$  = this.action$.pipe(
         ofType(undoRedoAction.UndoRedoActionTypes.UNDO),
         map((action: undoRedoAction.Undo) =>{
-            if(action.payload.presentAction.type==='[Router] Go'){
+            if(action.payload.presentAction.type === routerAction.RouterActionTypes.RouterGo){
                 this.routerStore.dispatch(
                     new RouterStart( {
                         navigateTo: new Navigation(
                             action.payload.presentAction.payload.navigatedFrom.path
                         )
                     }, true),
-
                 );
                 this.undoRedoStore.dispatch(new UndoSuccess())
             }
@@ -59,7 +59,7 @@ export class RouterEffects{
     public redoNavigation$  = this.action$.pipe(
         ofType(undoRedoAction.UndoRedoActionTypes.REDO),
         map((action: undoRedoAction.Redo) =>{
-            if(action.payload.fututeAction.type==='[Router] Go'){
+            if(action.payload.fututeAction.type === routerAction.RouterActionTypes.RouterGo){
                 this.routerStore.dispatch(
                     new RouterStart({
                         navigateTo: new Navigation(
