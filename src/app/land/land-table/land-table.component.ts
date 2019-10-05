@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger, MatDialog } from '@angular/material';
 import { LandService } from '../services/land.service';
 import { Store } from '@ngrx/store';
-import { LandState } from '../store/state/land.model';
-import { getlands } from '../store/land.reducer';
+import { LandState, Land } from '../store/state/land.model';
 import * as landActions from '../store/land.action';
 import { AddLandPopupComponent } from '../add-land-popup/add-land-popup.component';
 import * as _ from 'lodash';
+import { getlands } from '../store/land.selector';
 
 @Component({
   selector: 'app-land-table',
@@ -14,53 +14,47 @@ import * as _ from 'lodash';
   styleUrls: ['./land-table.component.css']
 })
 export class LandTableComponent implements OnInit {
-  public landCollectionStore : Item[];
+  @ViewChild(MatMenuTrigger)
+  public contextMenu: MatMenuTrigger;
+  public landCollectionStore : Land[];
+  public displayedColumns: string[] = ['landName', 'adress', 'areaInHektars'];
   private rowIdToEdit: number
+  private contextMenuPosition = { x: '0px', y: '0px' };
+
   constructor (
     private landStore: Store<LandState>, 
     public dialog: MatDialog){}
 
-  ngOnInit() {
+  public ngOnInit() :void{
     this.landStore.dispatch(new landActions.GetLands() )
-    this.landStore.select(getlands).subscribe(l =>
-      this.landCollectionStore = l
+    this.landStore.select(getlands).subscribe(lands =>
+      this.landCollectionStore = lands
       )
   }
 
-  public displayedColumns: string[] = ['landName', 'adress', 'areaInHektars'];
-
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
-
-  contextMenuPosition = { x: '0px', y: '0px' };
-
-  onContextMenu(event: MouseEvent, item: Item) {
+  public onContextMenu(event: MouseEvent, land: Land) :void{
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'item': item };
+    this.contextMenu.menuData = { 'item': land };
     this.contextMenu.openMenu();
   }
 
-  onContextMenuUpdateName(item: Item) {
-    this.rowIdToEdit = item.id;
+  public onContextMenuUpdateName(land: Land) : void{
+    this.rowIdToEdit = land.id;
   }
 
-  onContextMenuRemoveLand(item: Item) {
-    this.landStore.dispatch(new landActions.RemoveLand(item.id))
+  public onContextMenuRemoveLand(land: Land) : void{
+    this.landStore.dispatch(new landActions.RemoveLand(land.id))
   }
 
-  rowEditable(item: number) : boolean{
-    return this.rowIdToEdit === item;
+  public rowEditable(rowIdToEdit: number) : boolean{
+    return this.rowIdToEdit === rowIdToEdit;
   }
 
-  checkEnterKey($event, item: Item){
-    //this.landService.updateLandName(item.id, item.landName).subscribe();
-    let landId =item.id;
-    let landName =item.landName;
-    this.landStore.dispatch(new landActions.UpdateLandName({landId: landId, landName: landName}) )
+  public checkEnterKey(land: Land): void{
+    this.landStore.dispatch(new landActions.UpdateLandName({landId: land.id, landName: land.landName}) )
     this.rowIdToEdit = null;
-    
   }
 
   public openDialog(): void {
@@ -70,19 +64,10 @@ export class LandTableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
-      let test = result as Item 
-      test.id = this.landCollectionStore.length;
-      test.areaInHektars = +result.areaInHektars;
-      this.landStore.dispatch(new landActions.AddLand(test))
+      let land = result as Land 
+      land.id = this.landCollectionStore.length;
+      land.areaInHektars = +result.areaInHektars;
+      this.landStore.dispatch(new landActions.AddLand(land))
     });
   }
-}
-
-export interface Item {
-  id: number;
-  landName: string;
-  adress: string;
-  areaInHektars: number
 }

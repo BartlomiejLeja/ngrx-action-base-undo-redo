@@ -9,7 +9,6 @@ import * as undoRedoAction from '../../core/undoredo/store/undoredo.action';
 import { LandState } from './state/land.model';
 import { StateHistory } from '../../core/undoredo/store/state/undoredo.model';
 import { UndoSuccess, RedoSuccess } from '../../core/undoredo/store/undoredo.action';
-// import { getLastLandState } from '../../core/undoredo/store/undoredo.reducer';
 import * as _ from 'lodash';
 import { getLastLandState } from 'src/app/core/undoredo/store/undoredo.selector';
 
@@ -35,7 +34,7 @@ export class LandEffects {
             this.landService.updateLandName(action.payload.landId,action.payload.landName)
             .pipe(
                 map(
-                    lands => new landActions.UpdateLandNameSuccess(action.payload,action.isUndoRedoOperation)
+                    () => new landActions.UpdateLandNameSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new landActions.UpdateLandNameFail()))
             )
@@ -49,7 +48,7 @@ export class LandEffects {
             this.landService.addLand(action.payload)
             .pipe(
                 map(
-                    lands => new landActions.AddLandSuccess(action.payload,action.isUndoRedoOperation)
+                    () => new landActions.AddLandSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new landActions.AddLandFail()))
             )
@@ -63,7 +62,7 @@ export class LandEffects {
             this.landService.deleteLand(action.payload)
             .pipe(
                 map(
-                    lands => new landActions.RemoveLandSuccess(action.payload,action.isUndoRedoOperation)
+                   () => new landActions.RemoveLandSuccess(action.payload,action.isUndoRedoOperation)
                 ),
                 catchError(()=>of(new landActions.RemoveLandFail()))
             )
@@ -93,7 +92,6 @@ export class LandEffects {
                     let landToAdd = this.lastLandState.find(land => land.id == action.payload.presentAction.payload)
                     this.landStore.dispatch(new landActions.AddLand(
                         landToAdd,true))
-            
                 })
                 this.undoRedoStore.dispatch(new UndoSuccess())
             }

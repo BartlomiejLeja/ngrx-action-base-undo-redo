@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { Item } from '../land-table/land-table.component';
+import { Land } from '../store/state/land.model';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-land-popup',
@@ -10,12 +11,17 @@ import { Item } from '../land-table/land-table.component';
 export class AddLandPopupComponent implements OnInit {
 
   constructor( public dialogRef: MatDialogRef<AddLandPopupComponent>,
-  @Inject(MAT_DIALOG_DATA) public data: Item) { }
+  @Inject(MAT_DIALOG_DATA) public data: Land) { }
 
   ngOnInit() {
   }
 
+  landName = new FormControl('', [Validators.required]);
+  landAdress = new FormControl('', [Validators.required]);
+  landArea = new FormControl('', [Validators.required]);
+
   public onNoClick(): void {
-    this.dialogRef.close();
+    // this.landAddFormGroup.
+      this.dialogRef.close();
   }
 }

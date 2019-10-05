@@ -19,8 +19,6 @@ import { CustomSerializer, RouterStateUrl } from './core/router/custom-route-ser
 import { ProjectModule } from './project/project.module';
 import { RouterEffects } from './core/router/store/router.effects';
 import { fakeProjectBackendProvider } from './fake-backend/fake-project-backend-interceptor';
-import { EntityDataModule } from '@ngrx/data';
-import { entityConfig } from './project/store/enity-metadata';
 import { undoRedoReducer } from './core/undoredo/store/undoredo.reducer';
 import { metaReducers } from './core/metaReducer/metaReducer';
 
@@ -63,7 +61,6 @@ export const reducers: ActionReducerMap<RouterState> = {
       serializer: CustomSerializer
     } 
     ),
-    //EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
     fakeBackendProvider, fakeProjectBackendProvider

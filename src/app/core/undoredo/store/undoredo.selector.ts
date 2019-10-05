@@ -21,6 +21,17 @@ export const checkIfPastHistoryExist = createSelector(
   state => chceckIfUndoRedoPossible(state)
 )
 
+function chceckIfUndoRedoPossible (state){
+    let isUndoRedoPossible = false;
+    state.history.past.forEach(element => {
+      if(!element.type.includes('Get')){
+        isUndoRedoPossible = true;
+      }
+    });
+
+    return isUndoRedoPossible;
+}
+
 export const chceckIfFutureHistoryExist = createSelector(
   getUndoRedoSelector,
   state => state.history.future.length > 0
@@ -69,15 +80,4 @@ function calculateLastProjectState(state: any): any{
   }
  
   return lastProjectState.projectsColection;
-}
-
-function chceckIfUndoRedoPossible (state){
-    let isUndoRedoPossible = false;
-    state.history.past.forEach(element => {
-      if(!element.type.includes('Get')){
-        isUndoRedoPossible = true;
-      }
-    });
-
-    return isUndoRedoPossible;
 }

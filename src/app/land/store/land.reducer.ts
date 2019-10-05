@@ -1,13 +1,5 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { LandState, initialState } from './state/land.model';
 import { LandActions, LandActionTypes } from './land.action';
-
-const getLandSelector = createFeatureSelector<LandState>('land');
-
-export const getlands = createSelector(
-    getLandSelector,
-    state => state.landsColection
-)
 
 export function landReducer(state: LandState = initialState, action: LandActions ): LandState{
     switch (action.type){
@@ -27,7 +19,7 @@ export function landReducer(state: LandState = initialState, action: LandActions
         newLand.landName = action.payload.landName;
             return {
                 ...state,
-                landsColection:  state.landsColection.map(land => land.id===action.payload.landId ? land = newLand : land)
+                landsColection:  state.landsColection.map(land => land.id === action.payload.landId ? land = newLand : land)
                 
             }
         case LandActionTypes.UpdateLandNameFail:
@@ -49,7 +41,6 @@ export function landReducer(state: LandState = initialState, action: LandActions
         case LandActionTypes.RemoveLandSuccess:
             return {
                 ...state,
-                // landsColection: [...state.landsColection.slice(0, action.payload)]
                 landsColection: [...state.landsColection.filter(l=> l.id !=action.payload)]
             }
         case LandActionTypes.RemoveLandFail:

@@ -63,7 +63,6 @@ export class AddLandFail implements Action {
     public readonly type = LandActionTypes.AddLandFail;
 }
 
-
 export class RemoveLand implements Action {
     public readonly type = LandActionTypes.RemoveLand;
     constructor(public payload: any,
@@ -79,7 +78,6 @@ export class RemoveLandSuccess implements Action {
 export class RemoveLandFail implements Action {
     public readonly type = LandActionTypes.RemoveLandFail;
 }
-
 
 export type LandActions = 
     | GetLandsSuccess

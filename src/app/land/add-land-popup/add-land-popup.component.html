@@ -2,18 +2,25 @@
 <div mat-dialog-content>
   <mat-form-field>
     <p>Name</p>
-    <input matInput [(ngModel)]="data.landName">
+    <input matInput [(ngModel)]="data.landName" [formControl]="landName" required>
+   
   </mat-form-field>
   <mat-form-field>
     <p>Adress</p>
-    <input matInput [(ngModel)]="data.adress">
+    <input matInput [(ngModel)]="data.adress" [formControl]="landAdress">
   </mat-form-field>
   <mat-form-field>
     <p>Area in hektars</p>
-    <input matInput [(ngModel)]="data.areaInHektars">
+    <input matInput type="number" [(ngModel)]="data.areaInHektars" [formControl]="landArea">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+
+  <button *ngIf="!landName.invalid && !landAdress.invalid && !landArea.invalid" 
+          mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial> Save land
+  </button> 
+  <button *ngIf="landName.invalid || landAdress.invalid || landArea.invalid" 
+            mat-raised-button disabled > Save land
+  </button>
 </div>
