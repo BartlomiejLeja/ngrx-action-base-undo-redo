@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { StateHistory } from './state/undoredo.model';
 import { landReducer } from '../../../land/store/land.reducer';
-import { projectReducer } from 'src/app/project/store/project.reducer';
+import { projectReducer } from '../../../project/store/project.reducer';
 import * as _ from 'lodash';
 
 const getUndoRedoSelector = createFeatureSelector<StateHistory>('undoredo');
