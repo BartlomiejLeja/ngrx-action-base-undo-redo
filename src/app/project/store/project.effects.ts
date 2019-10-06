@@ -74,10 +74,10 @@ export class ProjectEffects {
     public undoProject$ = this.action$.pipe(
         ofType(undoRedoAction.UndoRedoActionTypes.UNDO),
         map((action: undoRedoAction.Undo) =>{
-            if(action.payload.presentAction.type==='[Project Component] Add project Success'){
+            if(action.payload.presentAction.type === projectActions.ProjectActionTypes.AddProjectSuccess){
                 this.projectStore.dispatch(new projectActions.RemoveProject(action.payload.presentAction.payload.id,true))
                 this.undoRedoStore.dispatch(new undoRedoAction.UndoSuccess())
-            } else if(action.payload.presentAction.type==='[Project Component] Update project name Success'){
+            } else if(action.payload.presentAction.type === projectActions.ProjectActionTypes.UpdateProjectNameSuccess){
                 this.undoRedoStore.select(getLastProjectState).pipe(take(1)).subscribe((lastProjectState)=>{
                     this.lastProjectState = lastProjectState;
                     let projectToAdd = this.lastProjectState.find(project => project.id == action.payload.presentAction.payload.projectId)
@@ -87,7 +87,7 @@ export class ProjectEffects {
                 })
                 this.undoRedoStore.dispatch(new undoRedoAction.UndoSuccess())
             }
-            else if(action.payload.presentAction.type===projectActions.ProjectActionTypes.RemoveProjectSuccess){
+            else if(action.payload.presentAction.type === projectActions.ProjectActionTypes.RemoveProjectSuccess){
                 this.undoRedoStore.select(getLastProjectState).pipe(take(1)).subscribe((lastProjectState)=>{
                     this.lastProjectState = lastProjectState;
                     let landToAdd = this.lastProjectState.find(land => land.id == action.payload.presentAction.payload)
@@ -104,10 +104,10 @@ export class ProjectEffects {
     public redoProject$ = this.action$.pipe(
         ofType(undoRedoAction.UndoRedoActionTypes.REDO),
         map((action: undoRedoAction.Redo) =>{
-            if(action.payload.fututeAction.type==='[Project Component] Add project Success'){
+            if(action.payload.fututeAction.type=== projectActions.ProjectActionTypes.AddProjectSuccess){
                 this.projectStore.dispatch(new projectActions.AddProject(action.payload.fututeAction.payload, true))
                 this.undoRedoStore.dispatch(new undoRedoAction.RedoSuccess())
-            }else if (action.payload.fututeAction.type==='[Project Component] Update project name Success'){
+            }else if (action.payload.fututeAction.type=== projectActions.ProjectActionTypes.UpdateProjectNameSuccess){
                 this.projectStore.dispatch(new projectActions.UpdateProjectName(
                     action.payload.fututeAction.payload,true));
                     this.undoRedoStore.dispatch(new undoRedoAction.RedoSuccess())
