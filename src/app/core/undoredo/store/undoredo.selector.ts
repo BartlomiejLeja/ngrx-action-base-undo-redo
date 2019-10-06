@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { StateHistory } from './state/undoredo.model';
-import { landReducer } from 'src/app/land/store/land.reducer';
+import { landReducer } from '../../../land/store/land.reducer';
 import { projectReducer } from 'src/app/project/store/project.reducer';
 import * as _ from 'lodash';
 

@@ -10,7 +10,7 @@ import { LandState } from './state/land.model';
 import { StateHistory } from '../../core/undoredo/store/state/undoredo.model';
 import { UndoSuccess, RedoSuccess } from '../../core/undoredo/store/undoredo.action';
 import * as _ from 'lodash';
-import { getLastLandState } from 'src/app/core/undoredo/store/undoredo.selector';
+import { getLastLandState } from '../../core/undoredo/store/undoredo.selector';
 
 @Injectable()
 export class LandEffects {
